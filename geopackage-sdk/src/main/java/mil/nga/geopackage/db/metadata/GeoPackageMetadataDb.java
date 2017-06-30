@@ -1,8 +1,8 @@
 package mil.nga.geopackage.db.metadata;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import org.sqlite.database.sqlite.SQLiteDatabase;
+import org.sqlite.database.sqlite.SQLiteOpenHelper;
 
 import mil.nga.geopackage.GeoPackageException;
 import mil.nga.geopackage.db.GeoPackageDatabase;
@@ -35,7 +35,7 @@ public class GeoPackageMetadataDb extends SQLiteOpenHelper {
      * @param context
      */
     public GeoPackageMetadataDb(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, context.getDatabasePath(DATABASE_NAME).getPath(), null, DATABASE_VERSION);
     }
 
     /**

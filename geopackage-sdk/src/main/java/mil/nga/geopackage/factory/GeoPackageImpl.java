@@ -399,4 +399,9 @@ class GeoPackageImpl extends GeoPackageCoreImpl implements GeoPackage {
         return cursor;
     }
 
+    public void registerTable(String tableName,
+                              GeoPackageCursorWrapper cursorWrapper) {
+        cursorFactory.registerTable(tableName, cursorWrapper);
+    }
+
 }

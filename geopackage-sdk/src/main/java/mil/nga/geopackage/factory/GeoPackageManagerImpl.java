@@ -2,9 +2,9 @@ package mil.nga.geopackage.factory;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.DatabaseErrorHandler;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
+import org.sqlite.database.DatabaseErrorHandler;
+import org.sqlite.database.sqlite.SQLiteDatabase;
+import org.sqlite.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import java.io.File;
@@ -451,8 +451,11 @@ class GeoPackageManagerImpl implements GeoPackageManager {
             throw new GeoPackageException("GeoPackage already exists: "
                     + database);
         } else {
-            GeoPackageDatabase db = new GeoPackageDatabase(context.openOrCreateDatabase(database,
-                    Context.MODE_PRIVATE, null));
+            GeoPackageCursorFactory cursorFactory = new GeoPackageCursorFactory();
+
+            GeoPackageDatabase db = new GeoPackageDatabase(SQLiteDatabase.openOrCreateDatabase(
+                    context.getDatabasePath(database).getPath(),
+                    cursorFactory));
             createAndCloseGeoPackage(db);
             GeoPackageMetadataDb metadataDb = new GeoPackageMetadataDb(
                     context);
@@ -803,8 +806,7 @@ class GeoPackageManagerImpl implements GeoPackageManager {
                     writable = false;
                 }
             } else {
-                sqlite = context.openOrCreateDatabase(database,
-                        Context.MODE_PRIVATE, cursorFactory);
+                sqlite = SQLiteDatabase.openOrCreateDatabase(context.getDatabasePath(database).getPath(), cursorFactory);
             }
 
             // Validate the database if validation is enabled
@@ -939,8 +941,7 @@ class GeoPackageManagerImpl implements GeoPackageManager {
                 }
             } else {
                 path = context.getDatabasePath(database).getAbsolutePath();
-                sqlite = context.openOrCreateDatabase(database,
-                        Context.MODE_PRIVATE, cursorFactory);
+                sqlite = SQLiteDatabase.openOrCreateDatabase(context.getDatabasePath(database).getPath(), cursorFactory);
             }
 
             try {
@@ -1275,8 +1276,8 @@ class GeoPackageManagerImpl implements GeoPackageManager {
         // Copy the geopackage over as a database
         File newDbFile = context.getDatabasePath(database);
         try {
-            SQLiteDatabase db = context.openOrCreateDatabase(database,
-                    Context.MODE_PRIVATE, null);
+            GeoPackageCursorFactory cursorFactory = new GeoPackageCursorFactory();
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(context.getDatabasePath(database).getPath(), cursorFactory);
             db.close();
             GeoPackageIOUtils.copyStream(geoPackageStream, newDbFile, progress);
         } catch (IOException e) {
@@ -1288,12 +1289,14 @@ class GeoPackageManagerImpl implements GeoPackageManager {
 
             // Verify that the database is valid
             try {
-                SQLiteDatabase sqlite = context.openOrCreateDatabase(database,
-                        Context.MODE_PRIVATE, null, new DatabaseErrorHandler() {
-                            @Override
-                            public void onCorruption(SQLiteDatabase dbObj) {
-                            }
-                        });
+                GeoPackageCursorFactory cursorFactory = new GeoPackageCursorFactory();
+                SQLiteDatabase sqlite = SQLiteDatabase.openOrCreateDatabase(
+                        context.getDatabasePath(database).getPath(),
+                        cursorFactory, new DatabaseErrorHandler() {
+							@Override
+							public void onCorruption(SQLiteDatabase sqLiteDatabase) {
+							}
+						});
                 validateDatabaseAndClose(sqlite, importHeaderValidation, importIntegrityValidation);
 
                 GeoPackageMetadataDb metadataDb = new GeoPackageMetadataDb(

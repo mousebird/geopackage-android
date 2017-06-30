@@ -1,11 +1,11 @@
 package mil.nga.geopackage.factory;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCursor;
-import android.database.sqlite.SQLiteCursorDriver;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.database.sqlite.SQLiteQuery;
+import org.sqlite.database.sqlite.SQLiteCursor;
+import org.sqlite.database.sqlite.SQLiteCursorDriver;
+import org.sqlite.database.sqlite.SQLiteDatabase;
+import org.sqlite.database.sqlite.SQLiteDatabase.CursorFactory;
+import org.sqlite.database.sqlite.SQLiteQuery;
 
 import java.util.Collections;
 import java.util.HashMap;

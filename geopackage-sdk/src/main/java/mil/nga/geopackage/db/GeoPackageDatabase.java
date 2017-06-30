@@ -2,8 +2,8 @@ package mil.nga.geopackage.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
+import org.sqlite.database.SQLException;
+import org.sqlite.database.sqlite.SQLiteDatabase;
 
 /**
  * GeoPackage database wrapper around SQLiteDatabase to quote table and column names

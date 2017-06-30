@@ -1,0 +1,3 @@
+[submodule "third-party/ormlite-android"]
+	path = third-party/ormlite-android
+	url = https://github.com/mousebird/ormlite-android.git

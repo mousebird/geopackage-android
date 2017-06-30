@@ -8,6 +8,7 @@ import mil.nga.geopackage.features.columns.GeometryColumns;
 import mil.nga.geopackage.features.user.FeatureDao;
 import mil.nga.geopackage.tiles.matrixset.TileMatrixSet;
 import mil.nga.geopackage.tiles.user.TileDao;
+import mil.nga.geopackage.factory.GeoPackageCursorWrapper;
 
 /**
  * A single GeoPackage database connection
@@ -115,5 +116,7 @@ public interface GeoPackage extends GeoPackageCore {
      * @since 1.2.1
      */
     public Cursor quickCheck();
+
+    public void registerTable(String tableName, GeoPackageCursorWrapper cursorWrapper);
 
 }
